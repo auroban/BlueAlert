@@ -17,6 +17,7 @@ import android.view.Gravity;
 import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -45,14 +46,16 @@ public class MainActivity extends AppCompatActivity {
     //The View that lists all the nearby Bluetooth devices found
     private ListView listBTDevices;
 
-    //Display the welcome text
-    private TextView BTHeader, BTDesc;
+
 
     //Store the recently found Bluetooth devices & pass them on to the ListView
     private ArrayAdapter BTArrayAdapter;
 
     //A variable that points to the actual Bluetooth on the device
     private BluetoothDevice btd;
+
+    //Container for the TextViews
+    private ViewGroup containerVG;
 
     //UUID to specify the services it can provide
 
@@ -75,11 +78,9 @@ public class MainActivity extends AppCompatActivity {
         listBTDevices = (ListView) findViewById(R.id.listBTDevices);
         backPressedCount = 1;
 
-        //Initially the ListView will be hidden, only after the Search button has been pressed,
-        // the ListView will be visible
-        listBTDevices.setVisibility(View.GONE);
-        BTHeader = (TextView) findViewById(R.id.BTHeader);
-        BTDesc = (TextView) findViewById(R.id.BTDesc);
+
+        containerVG = (ViewGroup) findViewById(R.id.containerVG);
+
 
 
         searchButton.setOnClickListener(new View.OnClickListener() {
@@ -161,8 +162,7 @@ public class MainActivity extends AppCompatActivity {
 
     public void searchBTDevices() {
         //As soon as the search starts, the Welcome screen TextView disappears & ListView appears
-        BTHeader.setVisibility(View.GONE);
-        BTDesc.setVisibility(View.GONE);
+        containerVG.setVisibility(View.GONE);
         listBTDevices.setVisibility(View.VISIBLE);
 
 

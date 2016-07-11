@@ -33,6 +33,11 @@
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true" />
 
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/containerVG"
+        android:orientation="vertical">
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -53,12 +58,16 @@
         android:textAlignment="center"
         android:layout_below="@id/BTHeader"
         android:textColor="#E4D6F0"/>
+    </LinearLayout>
 
     <ListView
         android:layout_width="match_parent"
         android:layout_height="300dp"
         android:id="@+id/listBTDevices"
         android:layout_alignParentTop="true"
-        android:layout_centerHorizontal="true" />
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_marginTop="20dp"
+        android:visibility="gone"/>
 
 </RelativeLayout>
