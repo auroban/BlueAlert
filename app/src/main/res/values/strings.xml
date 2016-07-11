@@ -1,0 +1,14 @@
+<resources>
+    <string name="app_name">BlueAlert</string>
+    <string name="action_settings">Settings</string>
+    <string name="splash_design">\n\t\tDesigned by:\n\nARIJIT BANERJEE</string>
+    <string name="title_activity_search_devices">searchDevices</string>
+    <string name="title_activity_search_btdevice">SearchBTDevice</string>
+    <string name="title_activity_connected_btdevice">ConnectedBTDevice</string>
+    <string name="BlueAlertHeader">Welcome to BlueAlert</string>
+
+    <string name="BlueAlertDesc">An alarm system designed to help you keep an eye on your valuables
+    \n\n Please press SEARCH to begin searching for nearby bluetooth devices</string>
+
+    <string name="title_activity_connected">Connected</string>
+</resources>
