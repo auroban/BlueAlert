@@ -3,6 +3,7 @@ package vertex2016.mvjce.edu.bluealert;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.widget.Toast;
 
 /**
  * Created by AURO on 3/14/2016.
@@ -14,6 +15,8 @@ public class SplashScreen extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.splashscreen);
+
+        Toast.makeText(this,"NEW CHANGES DEPLOYED!!", Toast.LENGTH_SHORT).show();
 
         Thread splsh = new Thread(){
 

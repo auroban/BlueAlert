@@ -2,6 +2,7 @@ package vertex2016.mvjce.edu.bluealert;
 
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
+import android.bluetooth.BluetoothSocket;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
@@ -18,12 +19,14 @@ import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.ViewGroup;
+import android.view.Window;
 import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.*;
 
+import java.io.IOException;
 import java.util.UUID;
 
 import static java.lang.Thread.sleep;
@@ -47,12 +50,15 @@ public class MainActivity extends AppCompatActivity {
     private ListView listBTDevices;
 
 
+    private UUID myUUID = UUID.fromString("00001101-0000-1000-8000-00805F9B34FB");
+
 
     //Store the recently found Bluetooth devices & pass them on to the ListView
     private ArrayAdapter BTArrayAdapter;
 
     //A variable that points to the actual Bluetooth on the device
     private BluetoothDevice btd;
+    private BluetoothSocket bSocket;
 
     //Container for the TextViews
     private ViewGroup containerVG;
@@ -210,6 +216,13 @@ public class MainActivity extends AppCompatActivity {
     }
 
     @Override
+    protected void onStop()
+    {
+        super.onStop();
+        BTArrayAdapter.clear();
+    }
+
+    @Override
     protected void onResume() {
         super.onResume();
         BA.cancelDiscovery();
@@ -219,8 +232,6 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onRestart() {
         super.onRestart();
-        if(!BTArrayAdapter.isEmpty())
-            BTArrayAdapter.clear();
         Toast.makeText(MainActivity.this, "Discovery Resumed", Toast.LENGTH_SHORT).show();
     }
 
@@ -228,9 +239,13 @@ public class MainActivity extends AppCompatActivity {
         @Override
         public void onItemClick(AdapterView<?> parent, View view, int position, long id)
         {
+            /*
             Intent connectedBT = new Intent(MainActivity.this, Connected.class);
             connectedBT.putExtra("Bluetooth Device", btd);
             startActivity(connectedBT);
+            */
+
+            new ConnectingThread(btd).run();
         }
     };
 
@@ -244,5 +259,61 @@ public class MainActivity extends AppCompatActivity {
             backPressedCount++;
             Toast.makeText(this,"Press BACK again to exit", Toast.LENGTH_SHORT).show();
         }
+    }
+
+    public class ConnectingThread extends Thread{
+
+        private final BluetoothDevice bluetoothDevice;
+        private final BluetoothSocket bluetoothSocket;
+
+        boolean ConnectionFlag = false;
+
+
+        public ConnectingThread(BluetoothDevice btd)
+        {
+            BluetoothSocket temp = null;
+            bluetoothDevice = btd;
+
+            try {
+                temp = btd.createInsecureRfcommSocketToServiceRecord(myUUID);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+
+            bluetoothSocket = temp;
+
+        }
+
+        public void run()
+        {
+            BA.cancelDiscovery();
+
+            try {
+                Toast.makeText(MainActivity.this,"REACHED BEFORE SOCKET CONNECTION", Toast.LENGTH_SHORT).show();
+                System.out.println("#####THIS IS BEFORE SOCKET CONNECT#####");
+                bluetoothSocket.connect();
+                System.out.println("#####THIS IS AFTER SOCKET CONNECT#####");
+                Toast.makeText(MainActivity.this,"REACHED AFTER SOCKET CONNECTION", Toast.LENGTH_SHORT).show();
+                ConnectionFlag = true;
+
+            } catch (IOException e) {
+
+                try {
+                    bluetoothSocket.close();
+                } catch (IOException e1) {
+                    e1.printStackTrace();}
+                return;
+            }
+
+            if(ConnectionFlag)
+                Toast.makeText(MainActivity.this, "Connected to" + bluetoothDevice.getName(),Toast.LENGTH_SHORT).show();
+            else
+                Toast.makeText(MainActivity.this, "Failed to connect",Toast.LENGTH_SHORT).show();
+
+
+        }
+
+
+
     }
 }

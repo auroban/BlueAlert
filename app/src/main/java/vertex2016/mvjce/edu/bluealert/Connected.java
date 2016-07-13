@@ -16,12 +16,12 @@ public class Connected extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_connected);
+        /*setContentView(R.layout.activity_connected);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
-        bg = (ImageView)findViewById(R.id.screenimageView2);
+        bg = (ImageView)findViewById(R.id.screenimageView2);*/
 
     }
 
