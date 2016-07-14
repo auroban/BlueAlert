@@ -1,5 +1,6 @@
 package vertex2016.mvjce.edu.bluealert;
 
+import android.app.Dialog;
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
 import android.bluetooth.BluetoothSocket;
@@ -12,8 +13,10 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
 import android.view.Menu;
@@ -27,6 +30,10 @@ import android.widget.Toast;
 import android.widget.*;
 
 import java.io.IOException;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
+import java.util.HashSet;
+import java.util.Set;
 import java.util.UUID;
 
 import static java.lang.Thread.sleep;
@@ -42,6 +49,8 @@ public class MainActivity extends AppCompatActivity {
     private int backPressedCount;
 
     private boolean on = false;
+
+    private HashSet<BluetoothDevice> btdSet;
 
     //The Search button on the main screen
     private Button searchButton;
@@ -202,8 +211,9 @@ public class MainActivity extends AppCompatActivity {
 
             if (BluetoothDevice.ACTION_FOUND.equals(action)) {
                 btd = intent.getParcelableExtra(BluetoothDevice.EXTRA_DEVICE); //Get the device details
+                //btdSet.add(btd);
 
-                BTArrayAdapter.add(btd.getName() + "\t\t" + btd.getAddress());
+                BTArrayAdapter.add(btd);
             }
 
         }
@@ -245,7 +255,10 @@ public class MainActivity extends AppCompatActivity {
             startActivity(connectedBT);
             */
 
-            new ConnectingThread(btd).run();
+
+            BluetoothDevice dev = (BluetoothDevice) BTArrayAdapter.getItem(position);
+
+            new ConnectingThread(dev).run();
         }
     };
 
@@ -263,20 +276,23 @@ public class MainActivity extends AppCompatActivity {
 
     public class ConnectingThread extends Thread{
 
-        private final BluetoothDevice bluetoothDevice;
         private final BluetoothSocket bluetoothSocket;
 
-        boolean ConnectionFlag = false;
 
 
         public ConnectingThread(BluetoothDevice btd)
         {
             BluetoothSocket temp = null;
-            bluetoothDevice = btd;
+
 
             try {
-                temp = btd.createInsecureRfcommSocketToServiceRecord(myUUID);
-            } catch (IOException e) {
+                Method m = btd.getClass().getMethod("createRfcommSocket", int.class);
+                temp = (BluetoothSocket) m.invoke(btd,1);
+            } catch (NoSuchMethodException e) {
+                e.printStackTrace();
+            } catch (InvocationTargetException e) {
+                e.printStackTrace();
+            } catch (IllegalAccessException e) {
                 e.printStackTrace();
             }
 
@@ -289,12 +305,8 @@ public class MainActivity extends AppCompatActivity {
             BA.cancelDiscovery();
 
             try {
-                Toast.makeText(MainActivity.this,"REACHED BEFORE SOCKET CONNECTION", Toast.LENGTH_SHORT).show();
-                System.out.println("#####THIS IS BEFORE SOCKET CONNECT#####");
                 bluetoothSocket.connect();
-                System.out.println("#####THIS IS AFTER SOCKET CONNECT#####");
-                Toast.makeText(MainActivity.this,"REACHED AFTER SOCKET CONNECTION", Toast.LENGTH_SHORT).show();
-                ConnectionFlag = true;
+                Toast.makeText(MainActivity.this,"Connected to " + btd.getName(),Toast.LENGTH_LONG).show();
 
             } catch (IOException e) {
 
@@ -304,11 +316,6 @@ public class MainActivity extends AppCompatActivity {
                     e1.printStackTrace();}
                 return;
             }
-
-            if(ConnectionFlag)
-                Toast.makeText(MainActivity.this, "Connected to" + bluetoothDevice.getName(),Toast.LENGTH_SHORT).show();
-            else
-                Toast.makeText(MainActivity.this, "Failed to connect",Toast.LENGTH_SHORT).show();
 
 
         }
