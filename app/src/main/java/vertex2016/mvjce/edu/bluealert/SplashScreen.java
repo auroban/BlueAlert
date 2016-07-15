@@ -16,8 +16,6 @@ public class SplashScreen extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.splashscreen);
 
-        Toast.makeText(this,"NEW CHANGES DEPLOYED!!", Toast.LENGTH_SHORT).show();
-
         Thread splsh = new Thread(){
 
             @Override

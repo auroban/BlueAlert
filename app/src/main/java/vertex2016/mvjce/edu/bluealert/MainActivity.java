@@ -9,6 +9,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.pm.ActivityInfo;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.design.widget.FloatingActionButton;
@@ -46,11 +47,11 @@ public class MainActivity extends AppCompatActivity {
     //A request code to identify which activity was executed
     private int REQ_CODE = 1;
 
+    //For defining PRESS BACK BUTTON TWICE
     private int backPressedCount;
 
+    //To check the status of the Search Button
     private boolean on = false;
-
-    private HashSet<BluetoothDevice> btdSet;
 
     //The Search button on the main screen
     private Button searchButton;
@@ -59,20 +60,17 @@ public class MainActivity extends AppCompatActivity {
     private ListView listBTDevices;
 
 
-    private UUID myUUID = UUID.fromString("00001101-0000-1000-8000-00805F9B34FB");
-
-
     //Store the recently found Bluetooth devices & pass them on to the ListView
     private ArrayAdapter BTArrayAdapter;
 
-    //A variable that points to the actual Bluetooth on the device
+    //Represents an actual remote Bluetooth Device
     private BluetoothDevice btd;
+
+    //A socket for establishing connection to a remote Bluetooth Device
     private BluetoothSocket bSocket;
 
     //Container for the TextViews
     private ViewGroup containerVG;
-
-    //UUID to specify the services it can provide
 
 
     //Intent Filter to detect the discovery of nearby Bluetooth devices
@@ -198,9 +196,6 @@ public class MainActivity extends AppCompatActivity {
         listBTDevices.setAdapter(BTArrayAdapter);
 
 
-        //Setting the onItemClick for selecting a Bluetooth device to connect to
-
-
     }
 
 
@@ -211,9 +206,8 @@ public class MainActivity extends AppCompatActivity {
 
             if (BluetoothDevice.ACTION_FOUND.equals(action)) {
                 btd = intent.getParcelableExtra(BluetoothDevice.EXTRA_DEVICE); //Get the device details
-                //btdSet.add(btd);
 
-                BTArrayAdapter.add(btd);
+                BTArrayAdapter.add(new BluetoothInfoContainer(btd.getName(),btd.getAddress(),btd));
             }
 
         }
@@ -249,16 +243,11 @@ public class MainActivity extends AppCompatActivity {
         @Override
         public void onItemClick(AdapterView<?> parent, View view, int position, long id)
         {
-            /*
-            Intent connectedBT = new Intent(MainActivity.this, Connected.class);
-            connectedBT.putExtra("Bluetooth Device", btd);
-            startActivity(connectedBT);
-            */
 
+            BluetoothInfoContainer BIC = (BluetoothInfoContainer) BTArrayAdapter.getItem(position);
 
-            BluetoothDevice dev = (BluetoothDevice) BTArrayAdapter.getItem(position);
+            new ConnectingThread().execute(BIC.getDevice());
 
-            new ConnectingThread(dev).run();
         }
     };
 
@@ -274,53 +263,86 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    public class ConnectingThread extends Thread{
+    //An AsyncTask to take care of establishing connection to the Bluetooth Device
+    //UI Thread is not blocked
+    public class ConnectingThread extends AsyncTask<BluetoothDevice, Integer, Boolean> {
 
-        private final BluetoothSocket bluetoothSocket;
+        private BluetoothSocket bluetoothSocket;
+        private Boolean SUCCESS = false;
+        private BluetoothDevice btd;
 
 
 
-        public ConnectingThread(BluetoothDevice btd)
-        {
-            BluetoothSocket temp = null;
 
+        @Override
+        protected Boolean doInBackground(BluetoothDevice... bluetoothDevices) {
 
             try {
+
+                btd = bluetoothDevices[0];
                 Method m = btd.getClass().getMethod("createRfcommSocket", int.class);
-                temp = (BluetoothSocket) m.invoke(btd,1);
+                bluetoothSocket = (BluetoothSocket) m.invoke(btd,1);
+
+                bluetoothSocket.connect();
+
+                if(bluetoothSocket.isConnected())
+                    SUCCESS = true;
+
             } catch (NoSuchMethodException e) {
                 e.printStackTrace();
             } catch (InvocationTargetException e) {
                 e.printStackTrace();
             } catch (IllegalAccessException e) {
                 e.printStackTrace();
-            }
-
-            bluetoothSocket = temp;
-
-        }
-
-        public void run()
-        {
-            BA.cancelDiscovery();
-
-            try {
-                bluetoothSocket.connect();
-                Toast.makeText(MainActivity.this,"Connected to " + btd.getName(),Toast.LENGTH_LONG).show();
-
             } catch (IOException e) {
-
-                try {
-                    bluetoothSocket.close();
-                } catch (IOException e1) {
-                    e1.printStackTrace();}
-                return;
+                e.printStackTrace();
             }
 
-
+            return SUCCESS;
         }
 
 
+        @Override
+        protected void onPostExecute(Boolean result) {
+
+            if(result)
+            {
+                Toast.makeText(MainActivity.this,"Successfully Paired With" + btd.getName(), Toast.LENGTH_SHORT).show();
+            }
+            else
+                Toast.makeText(MainActivity.this,"Couldn't Pair With" + btd.getName(), Toast.LENGTH_SHORT).show();
+        }
+    }
+
+
+    //A Class to contain Bluetooth Info
+    private class BluetoothInfoContainer {
+
+        private String name;
+        private String address;
+        private BluetoothDevice device;
+
+        public BluetoothInfoContainer(String devName, String devAddress, BluetoothDevice dev)
+        {
+            name = devName;
+            address = devAddress;
+            device = dev;
+        }
+
+        public String getName()
+        {
+            return name;
+        }
+
+        public String getAddress()
+        {
+            return address;
+        }
+
+        public BluetoothDevice getDevice()
+        {
+            return device;
+        }
 
     }
 }
