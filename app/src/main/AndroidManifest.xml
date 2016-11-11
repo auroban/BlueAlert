@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="vertex2016.mvjce.edu.bluealert">
+    package="com.auro.app.bluealert">
 
     <uses-permission android:name="android.permission.BLUETOOTH" />
     <uses-permission android:name="android.permission.BLUETOOTH_ADMIN" />
@@ -12,7 +12,7 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme.NoActionBar">
         <activity
-            android:name=".SplashScreen"
+            android:name="com.auro.app.bluealert.SplashScreen"
             android:label="@string/app_name"
             android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>
@@ -21,33 +21,33 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".MainActivity" />
+        <activity android:name="com.auro.app.bluealert.MainActivity" />
         <activity
-            android:name=".SearchBTDevice"
+            android:name="com.auro.app.bluealert.SearchBTDevice"
             android:label="@string/title_activity_search_btdevice"
-            android:parentActivityName=".MainActivity"
+            android:parentActivityName="com.auro.app.bluealert.MainActivity"
             android:theme="@style/AppTheme.NoActionBar">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="vertex2016.mvjce.edu.bluealert.MainActivity" />
+                android:value="com.auro.app.bluealert.MainActivity" />
         </activity>
         <activity
-            android:name=".ConnectedBTDevice"
+            android:name="com.auro.app.bluealert.ConnectedBTDevice"
             android:label="@string/title_activity_connected_btdevice"
-            android:parentActivityName=".SearchBTDevice"
+            android:parentActivityName="com.auro.app.bluealert.SearchBTDevice"
             android:theme="@style/AppTheme.NoActionBar">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="vertex2016.mvjce.edu.bluealert.SearchBTDevice" />
+                android:value="com.auro.app.bluealert.SearchBTDevice" />
         </activity>
         <activity
-            android:name=".Connected"
+            android:name="com.auro.app.bluealert.Connected"
             android:label="@string/title_activity_connected"
-            android:parentActivityName=".MainActivity"
+            android:parentActivityName="com.auro.app.bluealert.MainActivity"
             android:theme="@style/AppTheme.NoActionBar">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="vertex2016.mvjce.edu.bluealert.MainActivity" />
+                android:value="com.auro.app.bluealert.MainActivity" />
         </activity>
     </application>
 

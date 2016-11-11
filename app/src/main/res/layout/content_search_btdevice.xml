@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
-    tools:context="vertex2016.mvjce.edu.bluealert.SearchBTDevice"
+    tools:context="com.auro.app.bluealert.SearchBTDevice"
     tools:showIn="@layout/activity_search_btdevice">
 
 

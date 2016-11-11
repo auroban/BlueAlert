@@ -1,4 +1,4 @@
-package vertex2016.mvjce.edu.bluealert;
+package com.auro.app.bluealert;
 
 import org.junit.Test;
 

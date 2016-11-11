@@ -1,10 +1,9 @@
-package vertex2016.mvjce.edu.bluealert;
+package com.auro.app.bluealert;
 
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.view.KeyEvent;
-import android.widget.Toast;
 
 /**
  * Created by AURO on 3/19/2016.
