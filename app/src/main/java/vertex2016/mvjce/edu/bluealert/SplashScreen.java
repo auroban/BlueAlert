@@ -1,38 +1,49 @@
 package vertex2016.mvjce.edu.bluealert;
 
 import android.content.Intent;
+import android.content.pm.ActivityInfo;
 import android.os.Bundle;
+import android.os.Handler;
+import android.support.v4.app.ActivityOptionsCompat;
 import android.support.v7.app.AppCompatActivity;
-import android.widget.Toast;
+import android.transition.Explode;
+import android.transition.Transition;
+import android.view.WindowManager;
 
 /**
- * Created by AURO on 3/14/2016.
+ * Created on 3/14/2016.
+ * @author Arijit Banerjee
+ * @since 1.0
  */
 public class SplashScreen extends AppCompatActivity {
 
-    private int MAX_TIME = 2000;
+    private Handler mHandler;
+    private Runnable mRunnable;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
+        getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,WindowManager.LayoutParams.FLAG_FULLSCREEN);
         setContentView(R.layout.splashscreen);
+        init();
+        int waitTime = 5000;
+        mHandler.postDelayed(mRunnable, waitTime);
+    }
 
-        Thread splsh = new Thread(){
+    private void init() {
+        if  (mHandler == null) {
+            mHandler = new Handler();
+        }
 
-            @Override
-            public void run() {
-                try {
-                    sleep(MAX_TIME);
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
-                finally{
-                    Intent toMain = new Intent(getApplicationContext(), MainActivity.class);
-                    startActivity(toMain);
+        if (mRunnable == null) {
+            mRunnable = new Runnable() {
+                @Override
+                public void run() {
+                    Intent intent = new Intent(getApplicationContext(),MainActivity.class);
+                    startActivity(intent);
                     finish();
                 }
-
-            }
-        };
-        splsh.start();
+            };
+        }
     }
 }
