@@ -13,4 +13,8 @@
     \n\n Please press SEARCH to begin searching for nearby bluetooth devices</string>
 
     <string name="title_activity_connected">Connected</string>
+    <string name="title_activity_discover">DiscoverActivity</string>
+
+    <string name="button_discover">Discover</string>
+
 </resources>

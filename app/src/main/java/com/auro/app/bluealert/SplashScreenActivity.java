@@ -6,7 +6,6 @@ import android.content.pm.ActivityInfo;
 import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.os.Handler;
-import android.provider.MediaStore;
 import android.support.v7.app.AppCompatActivity;
 import android.view.WindowManager;
 import android.view.animation.Animation;
@@ -21,9 +20,9 @@ import android.widget.TextView;
  * @author Arijit Banerjee
  * @since 1.0
  */
-public class SplashScreen extends AppCompatActivity {
+public class SplashScreenActivity extends AppCompatActivity {
 
-    private static final int ANIM_DURATION = 1500;
+    private static final int ANIM_DURATION = 1000;
     private static final int SPLASH_ICON_ANIM_DURATION = 500;
     private static final int MEDIA_DURATION = 4000;
     private static final float SLIDE_UP_Y_BY = -0.15f;
@@ -60,7 +59,7 @@ public class SplashScreen extends AppCompatActivity {
 
         if (mMediaPlayer == null)
             mMediaPlayer = MediaPlayer
-                    .create(SplashScreen.this,R.raw.long_chime_sound);
+                    .create(SplashScreenActivity.this,R.raw.splash_screen_tune);
 
 
         if  (mHandler == null) {
@@ -105,27 +104,27 @@ public class SplashScreen extends AppCompatActivity {
 
         final Animation slideDown =
                 new TranslateAnimation(
-                        Animation.ABSOLUTE,0.0f,Animation.RELATIVE_TO_PARENT,0.0f,
-                        Animation.ABSOLUTE,0.0f,Animation.RELATIVE_TO_PARENT,SLIDE_DOWN_Y_BY);
+                        Animation.RELATIVE_TO_SELF,0.0f,Animation.RELATIVE_TO_PARENT,0.0f,
+                        Animation.RELATIVE_TO_SELF,-1.0f,Animation.RELATIVE_TO_PARENT,SLIDE_DOWN_Y_BY);
         slideDown.setDuration(ANIM_DURATION);
         slideDown.setFillAfter(true);
         slideDown.setFillEnabled(true);
 
         mSplashHeader.setAnimation(slideDown);
-
     }
 
     private void slideUpAnim() {
 
         final Animation slideUp =
                 new TranslateAnimation(
-                        Animation.ABSOLUTE,0.0f,Animation.RELATIVE_TO_PARENT,0.0f,
-                        Animation.ABSOLUTE,0.0f,Animation.RELATIVE_TO_PARENT,SLIDE_UP_Y_BY);
+                        Animation.RELATIVE_TO_SELF,0.0f,Animation.RELATIVE_TO_PARENT,0.0f,
+                        Animation.RELATIVE_TO_SELF,1.0f,Animation.RELATIVE_TO_PARENT,SLIDE_UP_Y_BY);
         slideUp.setDuration(ANIM_DURATION);
         slideUp.setFillAfter(true);
         slideUp.setFillEnabled(true);
 
         mSplashFooter.setAnimation(slideUp);
+
 
     }
 

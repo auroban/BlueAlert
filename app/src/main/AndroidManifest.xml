@@ -12,7 +12,7 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme.NoActionBar">
         <activity
-            android:name="com.auro.app.bluealert.SplashScreen"
+            android:name=".SplashScreenActivity"
             android:label="@string/app_name"
             android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>
@@ -21,33 +21,48 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name="com.auro.app.bluealert.MainActivity" />
+        <activity android:name=".MainActivity" />
         <activity
-            android:name="com.auro.app.bluealert.SearchBTDevice"
+            android:name=".SearchBTDevice"
             android:label="@string/title_activity_search_btdevice"
-            android:parentActivityName="com.auro.app.bluealert.MainActivity"
+            android:parentActivityName=".MainActivity"
             android:theme="@style/AppTheme.NoActionBar">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.auro.app.bluealert.MainActivity" />
         </activity>
         <activity
-            android:name="com.auro.app.bluealert.ConnectedBTDevice"
+            android:name=".ConnectedBTDevice"
             android:label="@string/title_activity_connected_btdevice"
-            android:parentActivityName="com.auro.app.bluealert.SearchBTDevice"
+            android:parentActivityName=".SearchBTDevice"
             android:theme="@style/AppTheme.NoActionBar">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.auro.app.bluealert.SearchBTDevice" />
         </activity>
         <activity
-            android:name="com.auro.app.bluealert.Connected"
+            android:name=".Connected"
             android:label="@string/title_activity_connected"
-            android:parentActivityName="com.auro.app.bluealert.MainActivity"
+            android:parentActivityName=".MainActivity"
             android:theme="@style/AppTheme.NoActionBar">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.auro.app.bluealert.MainActivity" />
+        </activity>
+        <activity
+            android:name=".DiscoverActivity"
+            android:label="@string/title_activity_discover"
+            android:parentActivityName=".SplashScreenActivity"
+            android:theme="@style/AppTheme.NoActionBar">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.auro.app.bluealert.SplashScreenActivity" />
         </activity>
     </application>
 
