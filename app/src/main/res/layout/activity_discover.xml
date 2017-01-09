@@ -8,14 +8,18 @@
     android:fitsSystemWindows="true"
     tools:context="com.auro.app.bluealert.DiscoverActivity"
     android:gravity="center"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    android:id="@+id/parent_layout_discover">
 
 
     <ListView
         android:id="@+id/list_discovered_devices"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="3">
+        android:layout_weight="3"
+        android:visibility="gone"
+        android:scaleY="0"
+        android:background="@color/colorAccent">
     </ListView>
 
     <LinearLayout
@@ -26,11 +30,12 @@
         android:gravity="center">
 
         <Button
+            android:id="@+id/discovery_button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:minHeight="60dp"
             android:minWidth="200dp"
-            android:text="@string/button_discover"/>
+            android:text="@string/button_text_search"/>
 
     </LinearLayout>
 

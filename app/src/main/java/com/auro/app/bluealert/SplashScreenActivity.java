@@ -47,7 +47,7 @@ public class SplashScreenActivity extends AppCompatActivity {
 
         mHandler.postDelayed(mRunnableShowIcon,ANIM_DURATION);
 
-        int waitTime = 7000;
+        int waitTime = 2000;
         mHandler.postDelayed(mRunnableChangeActivity, waitTime);
     }
 
@@ -70,7 +70,7 @@ public class SplashScreenActivity extends AppCompatActivity {
             mRunnableChangeActivity = new Runnable() {
                 @Override
                 public void run() {
-                    Intent intent = new Intent(getApplicationContext(),MainActivity.class);
+                    Intent intent = new Intent(getApplicationContext(),DiscoverActivity.class);
                     startActivity(intent);
                     finish();
                 }
@@ -91,7 +91,7 @@ public class SplashScreenActivity extends AppCompatActivity {
                             } catch (InterruptedException e) {
                                 e.printStackTrace();
                             }
-                            mMediaPlayer.stop();
+//                            mMediaPlayer.stop();
                         }
                     });
                     thread.start();
@@ -140,7 +140,7 @@ public class SplashScreenActivity extends AppCompatActivity {
                     @Override
                     public void onAnimationStart(Animator animator) {
 
-                        mMediaPlayer.start();
+//                        mMediaPlayer.start();
 
                     }
 
